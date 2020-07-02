@@ -1,0 +1,205 @@
+﻿
+@using PJ_SourceMau.Caption
+@{
+    var title = @ViewData["DrugStoreID"].ToString() == "0" ? CaptionKey.AddGroupForm : CaptionKey.EditGroupForm;
+    ViewData["Title"] = title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/clbcustom.css" rel="stylesheet" />
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <ol class="breadcrumb page-breadcrumb">
+        <li>
+            <i class="fa fa-book"></i>&nbsp;<a href="#">@CaptionKey.AdminMenu</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+        </li>
+        <li class="active"><a href="/admin/Group/">@CaptionKey.GroupMenu</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        @(ViewData["DrugStoreID"].ToString() == "0" ? CaptionKey.AddGroupForm : CaptionKey.EditGroupForm)
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="panel panel-blue">
+                <div class="panel-heading">@(ViewData["DrugStoreID"].ToString() == "0" ? CaptionKey.AddGroupForm : CaptionKey.EditGroupForm)</div>
+                <div class="panel-body pan">
+                    <br />
+                    <form id="frmEditGroup">
+                        <div class="form-body pal">
+                            <input class="hide" id="store_id" name="id" value="@ViewData["DrugStoreID"]" />
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="name">Tên Nhà Thuốc</label>
+                                        <div class="controls">
+                                            <input id="name" name="name" class="form-control" type="text" value='' />
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="adrress">Địa Chỉ </label>
+                                        <div class="controls">
+                                            <input id="address" name="address" class="form-control" type="text" value='' />
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="district">Quận</label>
+                                    <div class="controls">
+                                        <input id="district" name="district" class="form-control" type="text" value='' />
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="phone">Số Điện Thoại</label>
+                                    <div class="controls">
+                                        <input id="phone" name="phone" class="form-control" type="tel" value='' />
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="imgSrc">Url hình Ảnh</label>
+                                    <div class="controls">
+                                        <input id="imgSrc" name="imgSrc" class="form-control" type="text" value='' />
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-4" id="statushidden">
+                                <div class="form-group"  >
+                                    <label for="status" >Trạng Thái</label>
+                                    <div class="controls">
+                                        <input id="status" name="status" class="form-control" value='' />
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="categoryId">Loại Nhà Thuốc</label>
+                                    <div class="controls">
+                                        <select id="categoryId" value ="categoryId" class="selectpicker form-control" data-style="btn-white"
+                                                asp-items="ViewBag.listloai" asp-for="categoryId"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="openTime">Giờ Mở</label>
+                                    <div class="controls">
+                                        <input id="openTime" name="openTime" class="form-control" type="text" value='' />
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="closedTime">Giờ Đóng cửa</label>
+                                    <div class="controls">
+                                        <input id="closedTime" name="closedTime" class="form-control" type="text" value='' />
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="datecreate">Ngày Đăng Ký</label>
+                                    <div class="controls">
+                                        <input id="datecreate" name="datecreate" class="form-control" type="date" value='' />
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="description">Mô Tả</label>
+                                    <div class="controls">
+                                        <textarea class="editor form-control" id="description" name="description" style="height: 100px"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="form-actions text-right pal">
+
+                            <button type="submit" id="btnSave" class="btn btn-primary">Lưu</button>&nbsp;
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    if ($('#store_id').val() !== 0) {
+        var store = GetGroupByID($('#store_id').val());
+        $('#name').val(store.name);
+        $('#address').val(store.address);
+        $('#district').val(store.district);
+        $('#phone').val(store.phone);
+        $('#imgSrc').val(store.imgSrc);
+        $('#status').val(store.status);
+        $('#categoryId').val(store.categoryId);
+        $('#openTime').val(store.openTime);
+        $('#closedTime').val(store.closedTime);
+        $('#datecreate').val(store.datecreate);
+        $('#description').val(store.description);
+    } else {
+        alert('sssss');
+    } 
+    function GetGroupByID(id) {
+        var item;
+        $.ajax({
+            url: "/API/ListStore/GetStore/",
+            data: {
+                id: id
+            },
+            async: false,
+            success: function (i, result) {
+                item = i;
+            }
+        });
+        return item;
+    }
+
+    $('#frmEditGroup').submit(function () {
+        event.preventDefault();
+        var form = $('#frmEditGroup').serialize();
+        var groupID = $('#group_id').val();
+        if (groupID !== "0") {
+            $.ajax({
+                url: "/API/Group/UpdateGroup/",
+                type: "post",
+                data: form,
+                dataType: 'json',
+                success: function (data) {
+                    window.location.href = "/Admin/Group";
+                }
+            });
+        }
+        else {
+            $.ajax({
+                url: "/API/Group/InsertGroup/",
+                type: "post",
+                data: form,
+                dataType: 'json',
+                success: function (data) {
+                    window.location.href = "/Admin/Group";
+                }
+            });
+        }
+    });
+</script>

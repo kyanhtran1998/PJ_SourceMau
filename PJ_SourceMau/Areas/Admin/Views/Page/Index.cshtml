@@ -1,0 +1,80 @@
+﻿@using PJ_SourceMau.Areas.API.Models
+@model List<Page>
+@using PJ_SourceMau.Caption
+@{
+    ViewData["Title"] = CaptionKey.FunctionForm;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // $('.table').DataTable();
+        var table = $('#Group').DataTable();
+    })
+
+</script>
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <ol class="breadcrumb page-breadcrumb">
+        <li>
+            <i class="fa fa-book"></i>&nbsp;<a href="#">@CaptionKey.AdminMenu</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+        </li>
+        <li class="active">@CaptionKey.FunctionForm&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        @if (User.IsInRole("page_insert"))
+        {
+            <li><a href="/Admin/ChucNang/Edit/0"><i class="fa fa-plus"></i></a>&nbsp;&nbsp;</li>
+        }
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<div class="page-content">
+    <div class="panel panel-blue">
+        <div class="panel-heading">@CaptionKey.FunctionForm</div>
+        <div class="panel-body pan">
+            <br />
+            <table class="table table-striped table-condensed table-hover" id="Group">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên chức năng</th>
+                        <th>Alias</th>
+                        <th>Số permission</th>
+                        <th>Ghi chú</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="Group-Body">
+                    @{ var stt = 0;}
+                    @foreach (Page row in Model)
+                    {
+                        stt++;
+                        <tr>
+                            <td>
+                                @stt
+                            </td>
+                            <td>
+                                @row.name
+                            </td>
+                            <td>
+                                @row.alias
+                            </td>
+                            <td>
+                                @row.permission
+                            </td>
+                            <td>
+                                @row.note
+                            </td>
+                            <td class="" style="text-align:right">
+                                @if (User.IsInRole("page_update"))
+                                {
+                                    <a class="confirm-edit" id="update" title="Cập nhật" href="/admin/ChucNang/Edit/@row.id"><i class="fa-lg btn-control fa fa-pencil-square-o"></i></a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

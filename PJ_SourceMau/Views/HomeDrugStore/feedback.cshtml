@@ -1,0 +1,47 @@
+﻿@model PJ_SourceMau.Models.FeedBack
+
+@{
+    Layout = "~/Views/Shared/_LayoutStore.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Phản Hồi Website</title>
+</head>
+<body>
+    <div style="margin-left: 140px ;margin-right:150px;">
+        <h4 style="margin-left: 500px">Phản Hồi Website</h4>
+        <form method="post" action="/HomeDrugStore/feedback">
+            <div class="form-group">
+                <label asp-for="fbName" class="control-label">Tên Người Gửi</label>
+                <input asp-for="fbName" class="form-control" />
+                <span asp-validation-for="fbName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fbEmail" class="control-label">Email</label>
+                <input asp-for="fbEmail" class="form-control" />
+                <span asp-validation-for="fbEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fbPhone" class="control-label">Số Điện Thoại</label>
+                <input asp-for="fbPhone" class="form-control" />
+                <span asp-validation-for="fbPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fbContent" class="control-label">Nội Dung </label>
+                <textarea asp-for="fbContent" class="form-control"> </textarea>
+                <span asp-validation-for="fbContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Gửi Câu Hỏi" class="btn btn-default" />
+            </div>
+
+        </form>
+    </div>
+    
+
+</body>
+</html>

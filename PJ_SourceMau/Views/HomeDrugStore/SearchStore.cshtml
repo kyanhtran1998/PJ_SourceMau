@@ -1,0 +1,194 @@
+﻿@model List<DrugStore>
+
+@{
+    Layout = "~/Views/Shared/_LayoutStore.cshtml";
+}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvaxMRMLvAnaIgVKXpturHxldsZ2gTeJE&libraries=places">
+</script>
+<script type="text/javascript">
+    google.maps.event.addDomListener(window, 'load', intilize);
+    function intilize() {
+        var autocomplete = new google.maps.places.Autocomplete(document.getElementById("txtautocomplete"));
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+            var location = "Address: " + place.formatted_address + "<br />";
+            var Latitude = place.geometry.location.lat();
+            var Longitude = place.geometry.location.lng();
+            $("#Latitude").attr("value", Latitude);
+            $("#Longitude").attr("value", Longitude);
+
+
+
+        });
+
+    };
+</script>
+
+
+<header>
+    <!-- Header Start -->
+    <div class="header-area">
+        <div class="main-header ">
+            <div class="header-top top-bg d-none d-lg-block">
+                <div class="container">
+                    <div class="row justify-content-between align-items-center">
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!-- Header End -->
+</header>
+<!-- slider Area End-->
+<!--================Blog Area =================-->
+<section class="blog_area section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="blog_right_sidebar">
+                    <aside class="single_sidebar_widget search_widget">
+                        <form action="/HomeDrugStore/SearchStore" method="post">
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder='Search Keyword' name="search" id="txtautocomplete"
+                                           onfocus="this.placeholder = ''"
+                                           onblur="this.placeholder = 'nhập ví Trí tìm Kiếm'">
+                                    <input type="hidden" class="form-control" name="Latitude" id="Latitude">
+                                    <input type="hidden" class="form-control" name="Longitude" id="Longitude">
+                                    <div class="input-group-append">
+                                        <button class="btns" type="submit" ><i class="ti-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </aside>
+
+                    <aside class="single_sidebar_widget popular_post_widget">
+                        <h3 class="widget_title">Danh sách nhà thuốc nổi bật</h3>
+                        @foreach (DrugStore row in ViewData["Topfive"] as IList<DrugStore>)
+                        {
+
+                            <div class="media post_item">
+                                <img src="@Url.Content("~/upload/" +  @row.imgSrc)" alt="post" width="150px">
+                                <div class="media-body">
+                                    <a href="single-blog.html">
+                                        <h3><a href="/HomeDrugStore/DetailStore/@row.ID">@row.name</a></h3>
+                                    </a>
+                                    @{
+                                        string str = row.address;
+                                        string[] arrListStr = str.Split(',');
+                                        string adrress = arrListStr[0] + ", " + arrListStr[1] + ", " + arrListStr[2];
+
+                                    }
+                                    <p>@adrress</p>
+                                </div>
+                            </div>
+                        }
+                    </aside>
+                </div>
+            </div>
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                <div class="blog_left_sidebar">
+                    <!-- List group-->
+                    <ul class="list-group shadow list">
+                        @foreach (DrugStore row in Model)
+                        {
+
+                            <!-- list group item-->
+                            <li class="list-group-item">
+                                <!-- Custom content-->
+                                <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                                    <div class="media-body order-2 order-lg-1">
+                                        @if (@ViewBag.search != null)
+                                        {
+                                            <a href="/HomeDrugStore/DetailStore/@row.ID&@ViewBag.search"><h1 class="headderthuoc">@row.name</h1></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="/HomeDrugStore/DetailStore/@row.ID"><h1 class="headderthuoc">@row.name </h1></a>
+                                        }
+                                        <div class="row">
+                                            <div class="column" style="margin-left:12px">
+                                                <p class="footerthuoc "> <i class="fa fa-home"></i> Nhà Thuốc</p>
+                                                @{
+                                                    string openTime = row.openTime;
+                                                    string[] arr = openTime.Split(':');
+                                                    string openTimestart = arr[0] + "h" + arr[1];
+                                                    string closedTime = row.closedTime;
+                                                    string[] arr1 = closedTime.Split(':');
+                                                    string closedTimesend = arr1[0] + "h" + arr1[1];
+
+                                                }
+                                            <p class="footerthuoc"> <i class="fas fa-clock"></i> @openTimestart - @closedTimesend</p>
+
+                                            </div>
+                                            <div class="column" style="margin-left:150px">
+                                                <ul class="list-inline small ">
+                                                    @for (int i = 0; i < row.averageRating; i++)
+                                                    {
+                                                        <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                                                    }
+                                                    @if (row.averageRating == 0)
+                                                    {
+                                                <h5> &starf; Chưa có đánh giá</h5>
+                                                    }
+
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center justify-content-between mt-2">
+                                            @{
+                                                string str = row.address;
+                                                string[] arrListStr = str.Split(',');
+                                                string adrress = " " + arrListStr[0] + ", " + arrListStr[1] + ", " + arrListStr[2];
+
+                                            }
+                                            <p class="footerthuoc"><i class="fas fa-map-marker-alt"> </i> @adrress</p>
+
+                                        </div>
+                                    </div><img src="@Url.Content("~/upload/" +  @row.imgSrc)" alt="Generic placeholder image" width="216" height="152" class="ml-lg-5 order-1 order-lg-2 imagestore">
+
+                                </div>
+                                <!-- End -->
+                            </li>
+                            <!-- End -->
+
+                        }
+                    </ul>
+                    <!-- End -->
+
+                    <nav class="blog-pagination justify-content-center d-flex">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a href="#" class="page-link" aria-label="Previous">
+                                    <i class="ti-angle-left"></i>
+                                </a>
+                            </li>
+                            <p>
+                                @for (int i = 1; i <=ViewBag.page; i++)
+                                {
+                            
+                                <li class="page-item">
+                                    <a href="/HomeDrugStore/SearchStore/@i" class="page-link">@i</a>
+                                </li>
+                            }
+
+
+                            <li class="page-item">
+                                <a href="#" class="page-link" aria-label="Next">
+                                    <i class="ti-angle-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,41 @@
+﻿<div class="card mb-3 col-md-6 wow fadeIn">
+    <div class="card-header font-weight-bold">Leave a reply</div>
+    <div class="card-body">
+
+        <!-- Default form reply -->
+        <form action="/HomeDrugstore/DetailStore" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="rating" class="control-label">Rating</label>
+                <input asp-for="rating" class="form-control" />
+                <span asp-validation-for="rating" class="text-danger"></span>
+            </div>
+            <!-- Comment -->
+            <div class="form-group">
+                <label asp-for="comment" id="comment">Your comment</label>
+                <textarea asp-for="comment" class="form-control" id="comment" rows="5"></textarea>
+                <span asp-validation-for="comment" class="text-danger"></span>
+            </div>
+
+            <!-- Name -->
+            <div class="form-group">
+                <label asp-for="name">Your name</label>
+                <input asp-for="name" type="text" id="name" class="form-control">
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <br>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label asp-for="email">Your e-mail</label>
+                <input asp-for="email" type="email" id="email" class="form-control">
+                <span asp-validation-for="email" class="text-danger"></span>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="" btn btn-info btn-md">Thêm bình luận</button>
+            </div>
+        </form>
+        <!-- Default form reply -->
+    </div>
+</div>
+<!--/.Reply-->

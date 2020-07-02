@@ -1,0 +1,234 @@
+﻿@using PJ_SourceMau.Areas.API.Models;
+@using PJ_SourceMau.Caption
+@{
+    ViewData["Title"] = CaptionKey.PermissionofGroupForm;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<link href="~/css/clbcustom.css" rel="stylesheet" />*@
+
+@*<link href="~/css/clbcustom.css" rel="stylesheet" />*@
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <ol class="breadcrumb page-breadcrumb">
+        <li>
+            <i class="fa fa-book"></i>&nbsp;<a href="#">@CaptionKey.AdminMenu</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+        </li>
+        <li class="active"><a href="/admin/Group/">@CaptionKey.GroupMenu</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        @CaptionKey.FunctionForm
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="panel panel-blue">
+                <div class="panel-heading">@CaptionKey.FunctionForm</div>
+                <div class="panel-body pan">
+                    <div class="form-body pal">
+                        <br />
+
+                        <input class="hide" id="group_id" name="id" value='@ViewData["group_id"]' />
+                        <div id="pnl_permission">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>Chọn trang cần phân quyền</label><br />
+                                        <select id="selPage" name="selPage" data-live-search="true" class="select-by-page search-select form-control">
+                                            <option selected disabled="disabled" value="0">Chọn trang cần phân quyền</option>
+                                            @{
+                                                var tontai = 0;
+                                                foreach (var p in ViewData["page"] as List<Page>)
+                                                {
+                                                    tontai = 0;
+                                                    if (p.alias == "page")
+                                                    {
+                                                        if (User.IsInRole("page_view"))
+                                                        {
+                                                            foreach (var item in ViewData["permissions"] as List<Permission>)
+                                                            {
+                                                                if (p.id == item.page_id)
+                                                                {
+                                                                    tontai = 1;
+                                                                }
+                                                            }
+                                                            if (tontai == 0)
+                                                            {
+                                                                <option value="@p.id">@p.name</option>}
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        foreach (var item in ViewData["permissions"] as List<Permission>)
+                                                        {
+                                                            if (p.id == item.page_id)
+                                                            {
+                                                                tontai = 1;
+                                                            }
+                                                        }
+                                                        if (tontai == 0)
+                                                        {
+                                                            <option value="@p.id">@p.name</option>}
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <button id="btnSave" type="submit" class="btn btn-primary">Thêm trang quản lý</button>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <table class="table table-striped table-condensed table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            @foreach (var func in ViewData["functions"] as Dictionary<string, int>)
+                                            {
+                                                <th>@func.Key</th>
+                                            }
+
+                                        </tr>
+                                    </thead>
+                                    <tbody id="permission_body">
+                                        @foreach (var permission in ViewData["permissions"] as List<Permission>)
+                                        {
+                                            int per = permission.permission;
+                                            <tr>
+                                                <td hidden>@permission.id</td>
+                                                <td hidden id="group_@(permission.id)">@permission.group_id</td>
+                                                <td hidden id="page_@(permission.id)">@permission.page_id</td>
+                                                <td hidden id="per_@(permission.id)">@permission.permission</td>
+                                                <td><b>@permission.page_name</b></td>
+                                                @foreach (var func in ViewData["functions"] as Dictionary<string, int>)
+                                                {
+                                                    var code = func.Value;
+                                                    foreach (var page in ViewData["page"] as List<Page>)
+                                                    {
+                                                        if (page.id == permission.page_id)
+                                                        {
+                                                            if ((code & page.permission) != code)
+                                                            {
+                                                                <td>
+                                                                    <div class="controls">
+                                                                        <input class="@func.Key" name="@func.Key" value="@func.Value" type="checkbox" disabled>
+                                                                    </div>
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    <div class="controls" data-title="@(permission.id.ToString()+'-'+func.Value.ToString())">
+                                                                        <input class="@func.Key" name="@func.Key" value="@func.Value" type="checkbox">
+                                                                    </div>
+                                                                </td>
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(document).on('ifChecked', '#permission_body input[type="checkbox"]', function () {
+            var arr = $(this).parent().parent().data('title').split('-');
+            //var theTR = $(this).parent().parent().parent();
+            var id = arr[0];
+            var permission = arr[1];
+            var group_id = $("#group_" + id.toString()).text();
+            var page_id = $("#page_" + id.toString()).text();
+            //var newPermission;
+            permission = Number($("#per_" + id.toString()).text()) + Number($(this).val());
+            $("#per_" + id).html(permission);
+
+            $(this).iCheck('check');
+            $(this).iCheck('update');
+            LuuQuyen(id, group_id, page_id, permission);
+        });
+
+        $(document).on('ifUnchecked', '#permission_body input[type="checkbox"]', function () {
+            var arr = $(this).parent().parent().data('title').split('-');
+            var id = arr[0];
+            var permission = arr[1];
+            var group_id = $("#group_" + id.toString()).text();
+            var page_id = $("#page_" + id.toString()).text();
+            permission = Number($("#per_" + id.toString()).text()) - Number($(this).val());
+            $("#per_" + id).html(permission);
+            $(this).iCheck('uncheck');
+            $(this).iCheck('update');
+            LuuQuyen(id, group_id, page_id, permission);
+        });
+
+
+
+        $('#btnSave').click(function () {
+            var group_id = $('#group_id').val();
+            var page_id = $('#selPage').val();
+            var permission = 0;
+            //console.log("group_id" + group_id + "selPage" + page_id + "permission" + permission);
+            $.ajax({
+                type: "post",
+                url: "/Admin/Group/InsertPage",
+                data: {
+                    group_id: group_id,
+                    page_id: page_id,
+                    permission: permission
+                },
+                success: function (result) {
+                    if (result === "Exists") {
+                        alert("Trang đã tồn tại");
+                        return;
+                    }
+                    window.location.reload();
+                }
+            });
+        });
+
+        // check permission when page load
+        var theBody = $('#permission_body').children();
+        for (var r = 0; r < theBody.length; r++) {
+            var theTR = $(theBody[r]);
+            var per = theTR.children()[3].textContent;
+
+            for (var i = 11; i > 4; i--) {
+                if (Math.floor(per / theTR.children()[i].children[0].children[0].getAttribute('value')) !== 0) {
+                    var ischeck = theTR.children()[i].children[0].children[0];
+                    ischeck.setAttribute('checked', 'checked');
+
+                    per -= theTR.children()[i].children[0].children[0].getAttribute('value');
+                }
+
+            }
+        }
+    });
+    function LuuQuyen(id, groupid, pageid, per) {
+        $.ajax({
+            type: "post",
+            async: false,
+            url: "/API/Group/UpdatePermission",
+            data: {
+                id: id,
+                group_id: groupid,
+                page_id: pageid,
+                permission: per
+            },
+            success: function (result) {
+
+            }
+        });
+    }
+</script>
+

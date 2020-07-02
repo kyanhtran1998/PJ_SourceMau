@@ -1,0 +1,15 @@
+﻿@using PJ_SourceMau.Caption
+
+@{
+    ViewData["Title"] = CaptionKey.HomeMenu;
+
+    if (ViewBag.Language != null && ViewBag.Language.Equals("en"))
+    {
+        CaptionKey.Language = "en";
+    }
+    else
+    {
+        CaptionKey.Language = "vi";
+    }
+}
+this is home page

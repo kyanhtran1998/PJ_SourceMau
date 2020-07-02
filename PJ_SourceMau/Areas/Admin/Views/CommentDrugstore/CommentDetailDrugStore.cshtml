@@ -1,0 +1,117 @@
+﻿@using PJ_SourceMau.Models
+@using PJ_SourceMau.Caption
+
+@model List<Comment>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        // $('.table').DataTable();
+        var table = $('#ListStore').DataTable();
+        $('#confirm-delete').on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        });
+        $('#Alerbox').remove('hide');
+        $('#Alerbox').delay(1000).slideUp(500);
+
+        $('.btn-close').off('click').on('click', function () {
+            $('#drugname').val('');
+            $('#note').val('');
+            $('#price').val('');
+        });
+
+        $('.btn-edit').off('click').on('click', function () {
+            var idtest = $(this).data('id');
+            var detailDrug = GetDetailByID(parseInt(idtest));
+            $('#idstore').val(detailDrug.iddrugstore);
+            $('#DrugdetailID').val(detailDrug.id);
+            $('#drugname').val(detailDrug.drugname);
+            $('#note').val(detailDrug.note);
+            $('#price').val(detailDrug.price);
+        });
+
+        function GetDetailByID(id) {
+            var item;
+            $.ajax({
+                url: "/API/DetailDrugStore/GetdetailDrugStore/",
+                data: {
+                    id: id
+                },
+                async: false,
+                success: function (i, result) {
+                    item = i;
+                    console.log(item);
+                }
+            });
+            return item;
+        }
+    })
+
+
+
+</script>
+
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <ol class="breadcrumb page-breadcrumb" style="  margin-right: 500px">
+        <li><i class="fa fa-book"></i>&nbsp;<a href="#">@CaptionKey.AdminMenu</a></li>
+        <li><a href="/Admin/Comment">@CaptionKey.ListComment</a></li>
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<div class="page-content">
+    <div class="panel panel-blue">
+        <div class="panel-heading">@CaptionKey.ListDrugStore</div>
+        <div class="panel-body pan">
+            <br />
+            <table class="table table-striped table-condensed table-hover" id="ListStore">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>TÊN NGƯỜI DÙNG </th>
+                        <th>EMAIL</th>
+                        <th>BÌNH LUẬN</th>
+                        <th>ĐÁNH GIÁ</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody id="Group-Body">
+                    @{ var stt = 0;}
+                    @foreach (Comment row in Model)
+                    {
+                        stt++;
+                    <tr>
+                        <td>@stt</td>
+                        <td>@row.name</td>
+                        <td>@row.email</td>
+                        <td> @row.comment</td>
+                        <td> @row.rating &starf;</td>
+                        <td>
+                            <a href="#" data-href="/Admin/CommentDetailDrugStore/Detele/@row.cid" data-toggle="modal" data-target="#confirm-delete" class="btn btn-danger "><i class="fa fa-close"></i></a>
+                            
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                ARE YOU SURE DELETE ?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>

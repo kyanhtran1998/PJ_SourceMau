@@ -1,0 +1,403 @@
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Http
+@using PJ_SourceMau.Caption
+@inject IOptions<RequestLocalizationOptions> LocOptions
+@inject IViewLocalizer Localizer
+@{
+    string version = string.Format("{0:MMddHHmmss}", DateTime.Now);
+}
+
+@inject IHostingEnvironment hostingEnv
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="html">
+<head runat="server">
+    <title>@ViewData["Title"] - Source Mẫu</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="Thu, 19 Nov 1900 08:52:00 GMT" />
+    <link rel="shortcut icon" href="~/images/icons/logo.ico" />
+    <!--Loading bootstrap css-->
+    <link type="text/css" rel="stylesheet"
+          href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700" />
+    <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,700,300" />
+    <link type="text/css" rel="stylesheet"
+          href="~/vendors/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
+    <link type="text/css" rel="stylesheet"
+          href="~/vendors/sco.message/sco.message.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/font-awesome/css/font-awesome.min.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/bootstrap/css/bootstrap.min.css" />
+    <!--LOADING STYLESHEET FOR PAGE-->
+    <link type="text/css" rel="stylesheet" href="~/vendors/iCheck/skins/all.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/bootstrap-select/bootstrap-select.min.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/bootstrap-switch/css/bootstrap-switch.css" />
+    <!--Loading style vendors-->
+    <link type="text/css" rel="stylesheet" href="~/vendors/animate.css/animate.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/jquery-pace/pace.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/iCheck/skins/all.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/jquery-notific8/jquery.notific8.min.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/x-editable/bootstrap3-editable/css/bootstrap-editable.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/DataTables/media/css/jquery.dataTables.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/DataTables/media/css/dataTables.bootstrap.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/DataTables/extensions/FixedColumns/css/fixedColumns.dataTables.min.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/summernote/summernote.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/bootstrap-datepicker/css/datepicker.css" />
+    <link type="text/css" rel="stylesheet" href="~/vendors/jquery-steps/css/jquery.steps.css" />
+    <!--Loading style-->
+    <link type="text/css" rel="stylesheet" href="~/css/orange-blue.css" class="default-style" />
+    <link type="text/css" rel="stylesheet" href="~/css/style-responsive.css" />
+    <link type="text/css" rel="stylesheet" href="~/css/custom.css" />
+
+
+    <script src="~/js/jquery-1.10.2.min.js"></script>
+    <script src="~/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/js/jquery-ui.js"></script>
+    <script src="~/vendors/jquery-validate/jquery.validate.min.js"></script>
+    <!--loading bootstrap js-->
+    <script src="~/vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/vendors/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js"></script>
+    <script src="~/js/html5shiv.js"></script>
+    <script src="~/js/respond.min.js"></script>
+    <script src="~/vendors/metisMenu/jquery.metisMenu.js"></script>
+    <script src="~/vendors/slimScroll/jquery.slimscroll.js"></script>
+    <script src="~/vendors/jquery-cookie/jquery.cookie.js"></script>
+    <script src="~/vendors/iCheck/icheck.min.js"></script>
+    <script src="~/vendors/iCheck/custom.min.js"></script>
+    <script src="~/vendors/jquery-notific8/jquery.notific8.min.js"></script>
+    <script src="~/vendors/jquery-highcharts/highcharts.js"></script>
+    <script src="~/js/jquery.menu.js"></script>
+    <script src="~/vendors/jquery-pace/pace.min.js"></script>
+    <script src="~/vendors/holder/holder.js"></script>
+    <script src="~/vendors/responsive-tabs/responsive-tabs.js"></script>
+    <script src="~/vendors/jquery-news-ticker/jquery.newsTicker.min.js"></script>
+    <script src="~/vendors/moment/moment.js"></script>
+    <script src="~/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="~/vendors/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+    <link type="text/css" rel="stylesheet" href="~/vendors/jquery-toastr/toastr.min.css" />
+    <script src="~/vendors/sco.message/sco.message.js"></script>
+    <!--core javascript-->
+    <script src="~/js/main.js"></script>
+    <!--LOADING SCRIPTS FOR PAGE-->
+    <script src="~/vendors/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="~/vendors/iCheck/icheck.min.js"></script>
+    <script src="~/vendors/iCheck/custom.min.js"></script>
+    <script src="~/js/ui-checkbox-radio.js"></script>
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script src="~/vendors/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/vendors/x-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
+    <script src="~/vendors/DataTables/media/js/jquery.dataTables.js"></script>
+    <script src="~/vendors/DataTables/media/js/dataTables.bootstrap.js"></script>
+    <script src="~/vendors/DataTables/extensions/FixedColumns/js/dataTables.fixedColumns.js"></script>
+    <script src="~/vendors/jquery-toastr/toastr.min.js"></script>
+    <script src="~/js/ui-toastr-notifications.js"></script>
+    <script src="~/js/bootbox.min.js"></script>
+    <script src="~/js/download.js"></script>
+    <script src="~/vendors/summernote/summernote.js"></script>
+    <script src="~/js/ui-tabs.js"></script>
+    <script src="~/vendors/jquery-steps/js/jquery.steps.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Alerbox').remove('hide');
+            $('#Alerbox').delay(5000).slideUp(1500);
+        })
+    </script>
+</head>
+
+<body style="padding: 0">
+    <div>
+        <!--BEGIN BACK TO TOP--><a id="totop" href="#"><i class="fa fa-angle-up"></i></a><!--END BACK TO TOP-->
+        <!--BEGIN TOPBAR-->
+        <div id="header-topbar-option-demo" class="page-header-topbar">
+            <nav id="topbar" role="navigation" style="margin-bottom: 0; z-index: 2;"
+                 class="navbar navbar-default navbar-static-top">
+                <div class="navbar-header">
+                    <button type="button" data-toggle="collapse" data-target=".sidebar-collapse" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                    </button>
+                    <a id="logo" class="navbar-brand" asp-controller="Home" asp-action="Index">
+                        <span class="fa fa-rocket"></span>
+                        <span class="logo-text">Source Mẫu</span><span style="display: none" class="logo-text-icon">SM</span>
+                    </a>
+                </div>
+                <div class="topbar-main" style="background-color:#0067AC !important;">
+                    <a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>
+                    <ul class="nav navbar navbar-top-links navbar-right mbn">
+                        <li class="dropdown topbar-user">
+                            <a data-hover="dropdown" href="#" class="dropdown-toggle">
+                                <img src="/images/admin.ico" alt=""
+                                     class="img-responsive img-circle" />&nbsp;<span class="hidden-xs">@(((ClaimsIdentity)User.Identity).FindFirst("FullName").Value)</span>&nbsp;<span class="caret"></span>
+                                </a>
+
+
+                                <ul class="dropdown-menu dropdown-user">
+                                    <li class="nav-item" style="margin-left: 30px;">
+                                        <form asp-area="" asp-controller="Account" asp-action="Logout">
+                                            <i class="fa fa-lock"></i>
+                                            <span>&nbsp;</span>
+                                            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                @{
+                                    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+                                    var cultureItems = LocOptions.Value.SupportedUICultures
+                                        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+                                        .ToList();
+                                    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value + Context.Request.QueryString}";
+                                }
+                                <!--BEGIN THEME SETTING-->
+                                <a id="theme-setting" data-hover="dropdown" class="dropdown-toggle">
+                                    <i class="fa fa-cogs"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-theme-setting pull-right">
+                                    <li>
+                                        <h4 class="mtn"><i class="fa fa-language"></i> @Localizer["ChooseLanguage"]</h4>
+                                        <form asp-controller="Home" asp-action="SetLanguage" id="form" method="post" asp-route-returnUrl="@returnUrl" role="form">
+                                            <select id="culture" name="culture" onchange="this.form.submit();" class="form-control selectpicker phongBan"
+                                                    data-style="btn-white" data-show-subtext="true" data-live-search="true"
+                                                    asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="cultureItems"></select>
+                                        </form>
+                                    </li>
+                                    @if (((ClaimsIdentity)User.Identity).FindFirst("ListKhoaID") != null)
+                                    {
+                                        <li>
+                                            <h4 class="mtn">@Localizer["ChooseUnit"]</h4>
+                                            @{
+                                                var listPhongBan = ((ClaimsIdentity)User.Identity).FindFirst("ListKhoaID").Value.Split(',');
+                                                var selectList = new SelectList(listPhongBan);
+                                                var maPhongBan = ((ClaimsIdentity)User.Identity).FindFirst("KhoaID").Value;
+                                            }
+                                            <select id="list-style" class="form-control selectpicker phongBan"
+                                                    asp-items="@selectList"
+                                                    asp-for="@maPhongBan"
+                                                    data-style="btn-white" data-show-subtext="true" data-live-search="true"></select>
+                                        </li>
+                                    }
+                                </ul>
+                                <!--END THEME SETTING-->
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <!--END TOPBAR-->
+            <div id="wrapper">
+                <!--BEGIN SIDEBAR MENU-->
+                <nav id="sidebar" role="navigation" class="navbar-default navbar-static-side">
+                    <div class="sidebar-collapse menu-scroll">
+                        <ul id="side-menu" class="nav">
+                            <li class="user-panel">
+                                <div class="thumb">
+                                    <img src="/images/admin.ico"
+                                         alt="" class="img-circle" />
+                                </div>
+                                <div class="info">
+                                    <ul class="list-inline list-unstyled">
+                                        <!-- login code cấu hình
+                -->
+                                    </ul>
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                            <li>
+                                @if (((ClaimsIdentity)User.Identity).FindFirst("MSSV") != null)
+                                {
+                                    <a asp-area="" asp-controller="Home" asp-action="Index">
+                                        <i class="fa fa-home"></i>
+                                        <span class="menu-title">@CaptionKey.HomeMenu</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="/HomeDrugStore">
+                                        <i class="fa fa-home"></i>
+                                        <span class="menu-title">@CaptionKey.HomeMenu</span>
+                                    </a>
+                                }
+                            </li>
+                            @{
+                                if (Context.User.IsInRole("qlthongbao_view"))
+                                {
+                                    <li>
+                                        <a href="https://lecturer.tdt.edu.vn">
+                                            <i class="fa fa-sign-in"></i>
+                                            <span class="menu-title">Cổng thông tin viên chức</span>
+                                        </a>
+                                    </li>
+                                }
+                            }
+
+                            @{
+                                if (Context.User.IsInRole("group_view") || Context.User.IsInRole("subpergroup_view") || Context.User.IsInRole("page_view"))
+                                {
+                                    <li>
+
+                                        <a href="#">
+                                            <i class="glyphicon glyphicon-cog">
+                                                <div class="icon-bg bg-pink"></div>
+                                            </i><span class="menu-title">@CaptionKey.AdminMenu</span><span class="fa arrow"></span>
+                                        </a>
+                                        <ul class="nav nav-second-level">
+                                            @*Quản lý nhóm người dùng*@
+                                            @if (Context.User.IsInRole("group_view"))
+                                            {
+                                                <li>
+                                                    <a asp-area="Admin" asp-controller="Group" asp-action="Index">
+                                                        <i class="fa"></i><span class="submenu-title">@CaptionKey.GroupMenu</span>
+                                                    </a>
+                                                </li>
+                                            }
+                                            @*Quản lý nhóm người dùng cho coder*@
+                                            @if (Context.User.IsInRole("subpergroup_view"))
+                                            {
+                                                <li>
+                                                    <a asp-area="Admin" asp-controller="Group" asp-action="SubperAdminIndex">
+                                                        <i class="fa"></i><span class="submenu-title">@CaptionKey.GroupMenuSubper</span>
+                                                    </a>
+                                                </li>
+                                            }
+                                            @*Chức năng cho coder*@
+                                            @if (Context.User.IsInRole("page_view"))
+                                            {
+                                                <li>
+                                                    <a asp-area="Admin" asp-controller="Page" asp-action="Index">
+                                                        <i class="fa"></i><span class="submenu-title">@CaptionKey.FunctionForm</span>
+                                                    </a>
+                                                </li>
+                                            }
+
+                                        </ul>
+                                    </li>
+                                }
+                            }
+                            <li>
+                                <a asp-area="Admin" asp-controller="Page" asp-action="AboutWebsite">
+                                    <i class="fa fa-navicon"></i>
+                                    <span class="menu-title">Thông tin phần mềm</span>
+                                </a>
+                            </li>
+                            @if (((ClaimsIdentity)User.Identity).FindFirst("GroupId").Value == "1")
+                            {
+                                <li>
+                                    <a href="/Admin/ListAccount">
+                                        <i class="fa fa-navicon"></i>
+                                        <span class="menu-title">Danh Sách Tài khoản</span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="/Admin/ListAccount/Detail/@(((ClaimsIdentity)User.Identity).FindFirst("UserId").Value)">
+                                        <i class="fa fa-navicon"></i>
+                                        <span class="menu-title">Thông tin tài khoản</span>
+                                    </a>
+                                </li>
+                            }
+
+                            <li>
+                                <a href="/Admin/ListStore">
+                                    <i class="fa fa-navicon"></i>
+                                    <span class="menu-title">Danh Sách Nhà Thuốc</span>
+                                </a>
+                            </li>
+                            @if (((ClaimsIdentity)User.Identity).FindFirst("GroupId").Value == "1")
+                            {
+                                <li>
+                                    <a href="/Admin/ListDrugCategory">
+                                        <i class="fa fa-navicon"></i>
+                                        <span class="menu-title">Danh Sách Loại Nhà Thuốc</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (((ClaimsIdentity)User.Identity).FindFirst("GroupId").Value == "1")
+                            {
+                                <li>
+                                    <a href="/Admin/District">
+                                        <i class="fa fa-navicon"></i>
+                                        <span class="menu-title">Danh Sách Quận </span>
+                                    </a>
+                                </li>
+                            }
+
+                            <li>
+                                <a href="/Admin/Comment">
+                                    <i class="fa fa-navicon"></i>
+                                    <span class="menu-title">Quản lý Bình luận nhà thuốc </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Admin/Feedback">
+                                    <i class="fa fa-navicon"></i>
+                                    <span class="menu-title">Quản lý Phản Hồi </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" target="_blank">
+                                    <i class="fa fa-info">
+                                        <div class="icon-bg bg-pink"></div>
+                                    </i><span class="menu-title">Hướng dẫn sử dụng</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div id="page-wrapper">
+                    <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+                        @if (((ClaimsIdentity)User.Identity).FindFirst("MSSV") != null)
+                        {
+                            <breadcrumb asp-homepage-title="@CaptionKey.HomeMenu"
+                                        asp-homepage-url="@Url.Action("Index", "Home", values: new { area = "" })"
+                                        asp-bootstrap-version="V3"
+                                        asp-homepage-glyphicon="fa fa-home" class="breadcrumb page-breadcrumb pull-left"><i class="fa fa-angle-right"></i></breadcrumb>
+                        }
+                        else
+                        {
+                            <breadcrumb asp-homepage-title="@CaptionKey.HomeMenu"
+                                        asp-homepage-url="@Url.Action("Index", "Admin", values: new { area = "" })"
+                                        asp-bootstrap-version="V3"
+                                        asp-homepage-glyphicon="fa fa-home" class="breadcrumb page-breadcrumb pull-left"><i class="fa fa-angle-right"></i></breadcrumb>
+                        }
+                        <div class="page-header pull-right">
+                            <div class="page-title"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="page-content">
+                        @if (TempData["AlertMessage"] != null)
+                        {
+                            <div id="Alerbox" class="alert alert-success" id="success-alert">
+                                <button type="button" class="close" data-dismiss="alert">x</button>
+                                <strong>Success! </strong>@TempData["AlertMessage"]
+                            </div>
+                        }
+                        @if (TempData["AlertMessageError"] != null)
+                        {
+                            <div id="Alerbox" class="alert alert-danger" id="success-alert">
+                                <button type="button" class="close" data-dismiss="alert">x</button>
+                                <strong>ERROR! </strong>@TempData["AlertMessageError"]
+                            </div>
+                        }
+                        @RenderBody()
+                    </div>
+                </div>
+                <!--BEGIN FOOTER-->
+                <div id="footer" class="fixed">
+                    <div class="copyright">2019 © Tổ phần mềm - Trung tâm Công nghệ Thông tin Ứng dụng</div>
+                </div>
+                <!--END FOOTER--><!--END PAGE WRAPPER-->
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,72 @@
+﻿@using PJ_SourceMau.Models
+@using PJ_SourceMau.Caption
+@model AccountDetail
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <ol class="breadcrumb page-breadcrumb" style="  margin-right: 750px">
+        <li>
+            <i class="fa fa-book"></i>&nbsp;<a href="#">@CaptionKey.AdminMenu</a>
+        </li>
+        <li class="active"><a href="/Admin/ListAccount">@CaptionKey.ListAccount</li></a>
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="panel panel-blue">
+                <div class="panel-heading">@CaptionKey.DetailAccount</div>
+                <div class="panel-body pan">
+                    <br />
+                    <form id="frmEditGroup">
+                        <div class="form-body pal">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="name">Tên</label>
+                                        <div class="controls">
+                                            <input id="name" name="name" class="form-control" type="text" value='@Model.name' disabled />
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="adrress">Email </label>
+                                        <div class="controls">
+                                            <input id="address" name="address" class="form-control" type="text" value='@Model.email'disabled />
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="district">Số Điện Thoại</label>
+                                        <div class="controls">
+                                            <input id="district" name="district" class="form-control" type="text" value='@Model.phone' disabled/>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="phone">Địa chỉ</label>
+                                        <div class="controls">
+                                            <input id="phone" name="phone" class="form-control" type="tel" value='@Model.address' disabled/>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

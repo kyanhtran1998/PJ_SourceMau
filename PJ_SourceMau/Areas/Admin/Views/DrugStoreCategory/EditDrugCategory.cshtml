@@ -1,0 +1,103 @@
+﻿
+@using PJ_SourceMau.Caption
+@{
+    var title = @ViewData["DrugCategoryID"].ToString() == "0" ? CaptionKey.AddDrugCategoryForm : CaptionKey.EditDrugCategoryForm;
+    ViewData["Title"] = title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/clbcustom.css" rel="stylesheet" />
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb" aria-label="breadcrumb" >
+    <ol class="breadcrumb" style=" margin-right: 590px;" >
+        <li >
+            <i class="fa fa-book"></i>&nbsp;<a href="#">@CaptionKey.AdminMenu</a>
+        </li>
+        <li class="active"><a href="/admin/ListDrugCategory/">@CaptionKey.ListDrugCategory</a>
+        @(ViewData["DrugCategoryID"].ToString() == "0" ? CaptionKey.AddDrugCategoryForm : CaptionKey.EditDrugCategoryForm)
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="panel panel-blue">
+                <div class="panel-heading">@(ViewData["DrugCategoryID"].ToString() == "0" ? CaptionKey.AddGroupForm : CaptionKey.EditGroupForm)</div>
+                <div class="panel-body pan">
+                    <br />
+                    <form id="frmEditDrugCategory">
+                        <div class="form-body pal">
+                            <input class="hide" id="DrugCategory_id" name="id" value="@ViewData["DrugCategoryID"]" />
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="name">Tên Loại Nhà Thuốc</label>
+                                        <div class="controls">
+                                            <input id="categoryName" name="categoryName" class="form-control" type="text" value='' />
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions text-right pal">
+
+                            <button type="submit" id="btnSave" class="btn btn-primary">Lưu</button>&nbsp;
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    if ($('#DrugCategory_id').val() !== 0) {
+        var DrugCategory = GetGroupByID($('#DrugCategory_id').val());
+        $('#categoryName').val(DrugCategory.categoryName);
+    }
+    function GetGroupByID(categoryId) {
+        var item;
+        $.ajax({
+            url: "/API/DrugCategory/GetDrugCategory/",
+            data: {
+                categoryId: categoryId
+            },
+            async: false,
+            success: function (i, result) {
+                item = i;
+            }
+        });
+        return item;
+    }
+
+    $('#frmEditDrugCategory').submit(function () {
+        event.preventDefault();
+        var form = $('#frmEditDrugCategory').serialize();
+        var DrugCategoryid = $('#DrugCategory_id').val();
+        if (DrugCategoryid !== "0") {
+            $.ajax({
+                url: "/API/DrugCategory/UpdateDrugCategory",
+                type: "post",
+                data: form,
+                dataType: 'json',
+                success: function (data) {
+                    window.location.href = "/Admin/ListDrugCategory";
+                }
+            });
+        }
+        else {
+            $.ajax({
+                url: "/API/DrugCategory/InsertDrugCategory/",
+                type: "post",
+                data: form,
+                dataType: 'json',
+                success: function (data) {
+                    window.location.href = "/Admin/ListDrugCategory";
+                }
+            });
+        }
+    });
+</script>

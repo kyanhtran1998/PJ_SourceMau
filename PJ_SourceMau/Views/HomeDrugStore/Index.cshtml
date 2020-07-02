@@ -1,0 +1,206 @@
+﻿@using PJ_SourceMau.Models
+@using PJ_SourceMau.Caption
+@model List<DrugStore>
+
+@{
+    Layout = "~/Views/Shared/_LayoutStore.cshtml";
+}
+<!-- Preloader Start -->
+<!--<div id="preloader-active">
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="preloader-inner position-relative">
+            <div class="preloader-circle"></div>
+            <div class="preloader-img pere-text">
+                <img src="https://tuki.vn/images/avatars/ms/phan-mem-quan-ly-nha-thuoc-tuki-thuoc_59d2eda04331d.png" alt="">
+            </div>
+        </div>
+    </div>
+</div>-->
+<!--<header>-->
+<!-- Header Start -->
+<!--<div class="header-area">
+    <div class="main-header ">
+        <div class="header-bottom  header-sticky">
+            <div class="container">
+                <div class="row align-items-center">-->
+<!-- Logo -->
+<!--<div class="col-xl-2 col-lg-2 col-md-1">
+    <div class="logo">
+        <a href="index.html"><img src="https://tuki.vn/images/avatars/ms/phan-mem-quan-ly-nha-thuoc-tuki-thuoc_59d2eda04331d.png" width="50" alt=""></a>
+    </div>
+
+</div>
+<div class="col-xl-10 col-lg-10 col-md-10">-->
+<!-- Main-menu -->
+<!--<div class="main-menu f-right d-none d-lg-block">
+        <nav>
+            <ul id="navigation">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About US</a></li>
+                <li><a href="packages.html">Package</a></li>
+                <li>
+                    <a href="blog.html">Blog</a>
+                    <ul class="submenu">
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="single-blog.html">Blog Details</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Pages</a>
+                    <ul class="submenu">
+                        <li><a href="elements.html">Element</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>-->
+<!-- Mobile Menu -->
+<!--<div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+<!-- Header End -->
+<!--</header>-->
+
+<main>
+    <!-- slider Area Start-->
+    <div class="slider-area ">
+        <!-- Mobile Menu -->
+        <div class="slider-active">
+            <div class="single-slider hero-overly  slider-height d-flex align-items-center" data-background="https://topmade.com/wp-content/uploads/2015/03/Drugstore-non-illuminated-sign-frame2006-e1425336611442.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-9 col-lg-9 col-md-9">
+                            <div class="hero__caption">
+                                <h1>Find your <span> Drug Store!</span> </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Search Box -->
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+<div class="container py-5">
+
+    <!-- For demo purpose -->
+    <div class="row text-center text-white mb-5">
+        <div class="col-lg-7 mx-auto">
+            <h1 class="display-4">Danh sách Nhà Thuốc</h1>
+            <p class="lead mb-0"> Có Thể giúp bạn tìm kiếm nhà thuốc nhanh nhất</p>
+            <p class="lead">
+              
+                  
+            
+            </p>
+        </div>
+    </div>
+    <!-- End -->
+
+    <div class="row">
+        <div class="col-lg-9 mx-auto">
+            <!-- List group-->
+            <ul class="list-group shadow">
+            
+                @foreach (DrugStore row in Model)
+                {
+                    <!-- list group item-->
+                    <li class="list-group-item">
+
+                        <!-- Custom content-->
+                        <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                            <div class="media-body order-2 order-lg-1">
+                                <a href="/HomeDrugStore/DetailStore/@row.ID"><h1 class="headderthuoc">@row.name</h1></a>
+                                <p class="footerthuoc "> <i class="fa fa-home"></i> @ViewBag.list[@row.categoryId]</p>
+                                @{
+                                    string openTime = row.openTime;
+                                    string[] arr = openTime.Split(':');
+                                    string openTimestart = arr[0] + "h" + arr[1];
+                                    string closedTime = row.closedTime;
+                                    string[] arr1 = closedTime.Split(':');
+                                    string closedTimesend = arr1[0] + "h" + arr1[1];
+
+                                }
+                                <p class="footerthuoc"> <i class="fas fa-clock"></i> @openTimestart - @closedTimesend</p>
+                                <div class="d-flex align-items-center justify-content-between mt-2">
+                                    @{
+                                        string str = row.address;
+                                        string[] arrListStr = str.Split(',');
+                                        string adrress = " " + arrListStr[0] + ", " + arrListStr[1] + ", " + arrListStr[2];
+
+                                    }
+                                    <p class="footerthuoc"><i class="fas fa-map-marker-alt"> </i>  @adrress</p>
+                                    <ul class="list-inline small ">
+                                        @for (int i = 0; i < row.averageRating; i++)
+                                        {
+                                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                                        }
+                                        @if (row.averageRating == 0)
+                                        {
+                                            <h5> &starf; Chưa có đánh giá</h5>
+                                        }
+                                    </ul>
+                                </div>
+                            </div><img src="@Url.Content("~/upload/" +  @row.imgSrc)" alt="Generic placeholder image" width="216" height="152" class="ml-lg-5 order-1 order-lg-2 imagestore">
+
+                        </div>
+                        <!-- End -->
+                    </li>
+                    <!-- End -->
+
+                }
+            </ul>
+            <!-- End -->
+        </div>
+
+        <div class="col-lg-3 mx-auto">
+
+            <!-- List group-->
+            <ul class="list-group shadow">
+
+                @foreach (DrugStore row in ViewData["Topfive"] as IList<DrugStore>)
+                {
+                    <!-- list group item-->
+                    <li class="list-group-item">
+                        <!-- Custom content-->
+                        <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                            <div class="media-body order-2 order-lg-1">
+                                <img src="@Url.Content("~/upload/" +  @row.imgSrc)" alt="Generic placeholder image" width="200">
+                                <h5 class="mt-0 font-weight-bold mb-2"> <a href="/HomeDrugStore/DetailStore/@row.ID">@row.name</a></h5>
+                                <div class="d-flex align-items-center justify-content-between mt-1">
+                                    @{
+                                        string str = row.address;
+                                        string[] arrListStr = str.Split(',');
+                                        string adrress = arrListStr[0] + ", " + arrListStr[1] + ", " + arrListStr[2];
+
+                                    }
+                                    <h10 class="my-2"> Địa chỉ: @adrress</h10>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End -->
+                    </li>
+                    <!-- End -->
+                }
+            </ul>
+            <!-- End -->
+        </div>
+
+
+
+
+    </div>
+</div>
+
+

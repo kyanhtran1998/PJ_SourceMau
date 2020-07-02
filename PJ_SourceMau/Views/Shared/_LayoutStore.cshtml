@@ -1,0 +1,223 @@
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.Extensions.Options
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Http
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Nhà Thuốc </title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/css/bootstrap-rating.css" />
+    <link rel="stylesheet" href="~/assets/css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="~/assets/css/flaticon.css" />
+    <link rel="stylesheet" href="~/assets/css/slicknav.css" />
+    <link rel="stylesheet" href="~/assets/css/animate.min.css" />
+    <link rel="stylesheet" href="~/assets/css/magnific-popup.css" />
+    <link rel="stylesheet" href="~/assets/css/fontawesome-all.min.css" />
+    <link rel="stylesheet" href="~/assets/css/themify-icons.css" />
+    <link rel="stylesheet" href="~/assets/css/slick.css" />
+    <link rel="stylesheet" href="~/assets/css/nice-select.css" />
+    <link rel="stylesheet" href="~/assets/css/style.css" />
+    <link href="~/css/home.css" rel="stylesheet" />
+    <style>
+        [id*='starImg'] {
+            color: gray;
+            font-size: 400%;
+        }
+    </style>
+
+</head>
+<!-- Preloader Start -->
+<div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="preloader-circle"></div>
+                <div class="preloader-img pere-text">
+                    <img src="~/images/logoNhaThuoc.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+<header>
+    <!-- Header Start -->
+    <div class="header-area">
+        <div class="main-header ">
+            <div class="header-bottom  header-sticky">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <!-- Logo -->
+                        <div class="col-xl-2 col-lg-2 col-md-1">
+                            <div class="logo">
+                                <a href="index.html"><img <img src="~/images/logoNhaThuoc.png" width="50" alt=""></a>
+                            </div>
+
+                        </div>
+                        <div class="col-xl-10 col-lg-10 col-md-10">
+                            <!-- Main-menu -->
+                            <div class="main-menu d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">
+                                        <li><a href="/HomeDrugStore">Trang Chủ</a></li>
+                                        <li><a href="/HomeDrugStore/SearchStore">Tìm Kiếm Nhà Thuốc</a></li>
+                                        <li><a href="/HomeDrugStore/introduce">Giới Thiệu Website</a></li>
+                                        <li>
+                                            <a href="/HomeDrugStore/feedback">Phản Hồi và Đánh Giá Website</a>
+                                           
+                                        </li>
+                                      
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <div class="mx-3 f-right">
+                                                <li class="nav-item" style="flex-direction: row; margin-left: 10px;">
+                                                    @if (((ClaimsIdentity)User.Identity).FindFirst("GroupId").Value == "1")
+                                                    {
+                                                    <a asp-area="admin" asp-controller="Account" asp-action="ListAccount">
+                                                        <i class="fa fa-user black-color"></i>
+                                                        &nbsp;&nbsp;@(((ClaimsIdentity)User.Identity).FindFirst("FullName").Value)
+                                                    </a>
+                                                    }
+                                                    else
+                                                    {
+                                                <a href="/Admin/ListAccount/Detail/@(((ClaimsIdentity)User.Identity).FindFirst("UserId").Value)">
+                                                    <i class="fa fa-user"></i>
+                                                    &nbsp;&nbsp;@(((ClaimsIdentity)User.Identity).FindFirst("FullName").Value)
+                                                </a>
+                                                    }
+                                                </li>
+                                                <li class="nav-item" style="flex-direction: row; margin-left: 30px;">
+                                                    <form asp-area="" asp-controller="Account" asp-action="Logout">
+                                                        <i class="fa fa-lock"></i>
+                                                        <button type="submit" class="btn-link border-0" style=" font-family:Barlow Condensed; background: none!important;">LOGOUT</button>
+                                                    </form>
+                                                </li>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="f-right">
+                                                <li class="nav-item" style="flex-direction: row; margin-left: 10px;">
+                                                    <a asp-area="" asp-controller="Account" asp-action="Login">
+                                                        <i class="fa fa-user text-black-50"></i>
+                                                        &nbsp;&nbsp;Login
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item" style="flex-direction: row;margin-left: 10px;">
+                                                    <a asp-area="" asp-controller="Account" asp-action="Register">
+                                                        <i class="fa fa-lock text-black-50"></i>
+                                                        &nbsp;&nbsp;Register
+                                                    </a>
+                                                </li>
+                                            </div>
+                                        }
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                       
+                        <!-- Mobile Menu -->
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+</header>
+<body>
+    @RenderBody()
+    <footer>
+        <!-- Footer Start-->
+        <div class="footer-area footer-padding footer-bg" data-background="https://www.sablayanadventurecamp.com/images/footer-bg.jpg">
+            <div class="container">
+                <div class="row d-flex justify-content-between">
+
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                        <div class="single-footer-caption mb-50">
+                            <div class="single-footer-caption mb-30">
+                                <div class="footer-tittle">
+                                    <div style="color:white">
+                                        <h4 style="color:white">Thông Tin Phần Mềm</h4>
+                                        <p style="color:white">
+                                            Thành Viên: Trần Kỳ Anh, Lê Ngọc Anh
+                                        </p>
+                                        <p style="color:white"> Email: kyanh28@gmail.com</p>
+                                        <p style="color:white"> Số Điện Thoại: 04411145555</p>
+                                        <p style="color:white"> Địa Chỉ: Đại Học Tôn Đức Thắng, 18 Nguyễn Hữu Thọ Phường Tân Phong Quận 7 Tp Hồ Chí Minh</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                        <div class="single-footer-caption mb-50">
+                            <div class="single-footer-caption mb-30">
+                                <div class="footer-tittle">
+                                    <div class="footer-pera">
+                                        <p>
+                                            Phần Mềm Danh Bạ Nhà Thuốc Sẽ Giúp Bạn Tìm Kiếm Các Nhà Thuốc Gần Bạn Nhất Và Có Thể Giúp Bạn Tìm Kiếm Tên Nhà Thuốc,
+                                            Loại Thuốc Và Đánh Giá Khách Quan Nhà Thuốc
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- Footer bottom -->
+
+            </div>
+        </div>
+        </div>
+        <!-- Footer End-->
+    </footer>
+
+    <!-- JS here -->
+    <!-- All JS Custom Plugins Link Here here -->
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src="~/assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="~/assets/js/popper.min.js"></script>
+    <script src="~/assets/js/bootstrap-rating.js"></script>
+    <script src="~/assets/js/bootstrap-rating.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <link href="~/Content/css/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/css/nn-style.css" rel="stylesheet" />
+
+    <script src="~/Content/js/jquery-ui.js"></script>
+
+    <!-- Jquery Mobile Menu -->
+    <script src="~/assets/js/jquery.slicknav.min.js"></script>
+    <script src="~/Content/js/jquery.scrollbox.js"></script>
+    <script src="~/Content/js/bootstrap.js"></script>
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    <script src="~/assets/js/owl.carousel.min.js"></script>
+    <script src="~/assets/js/slick.min.js"></script>
+
+    <!-- Scrollup, nice-select, sticky -->
+    <script src="~/assets/js/jquery.scrollUp.min.js"></script>
+    <script src="~/assets/js/jquery.nice-select.min.js"></script>
+    <script src="~/assets/js/jquery.sticky.js"></script>
+
+
+    <!-- Jquery Plugins, main Jquery -->
+    <script src="~/assets/js/plugins.js"></script>
+    <script src="~/assets/js/main.js"></script>
+
+
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

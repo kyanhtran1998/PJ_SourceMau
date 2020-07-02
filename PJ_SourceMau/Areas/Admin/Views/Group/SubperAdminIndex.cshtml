@@ -1,0 +1,126 @@
+﻿@using PJ_SourceMau.Areas.API.Models
+@model List<Group>
+@using PJ_SourceMau.Caption
+@{
+    ViewData["Title"] = CaptionKey.GroupMenu;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // $('.table').DataTable();
+        var table = $('#Group').DataTable();
+    })
+
+</script>
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <ol class="breadcrumb page-breadcrumb">
+        <li>
+            <i class="fa fa-book"></i>&nbsp;<a href="#">@CaptionKey.AdminMenu</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+        </li>
+        <li class="active">@CaptionKey.GroupMenu&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        @if (User.IsInRole("group_insert"))
+        {
+            <li><a href="/Admin/Group/EditGroup/0"><i class="fa fa-plus"></i></a>&nbsp;&nbsp;</li>
+        }
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<div class="page-content">
+
+
+    <div class="panel panel-blue">
+        <div class="panel-heading">@CaptionKey.GroupMenu</div>
+        <div class="panel-body pan">
+            <br />
+            <table class="table table-striped table-condensed table-hover" id="Group">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Nhóm</th>
+                        <th>Mô tả</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="Group-Body">
+                    @{ var stt = 0;}
+                    @foreach (Group row in Model)
+                    {
+                        if (row.name == "Super Admin")
+                        {
+                            if (User.IsInRole("page_view"))
+                            {
+                                stt++;
+                                <tr>
+                                    <td>
+                                        @stt
+                                    </td>
+                                    <td>
+                                        @row.name
+                                    </td>
+                                    <td>
+                                        @row.note
+                                    </td>
+                                    <td>
+                                        <a href="/Admin/Group/Member/@row.id">Quản lý thành viên</a>
+                                    </td>
+                                    <td>
+                                        <a href="/Admin/Group/Permission/@row.id">Quản lý quyền</a>
+                                    </td>
+                                    <td class="" style="text-align:right">
+                                        @if (User.IsInRole("group_update"))
+                                        {
+                                            <a class="confirm-edit" id="update" title="Cập nhật" href="/Admin/Group/EditGroup/@row.id"><i class="fa-lg btn-control fa fa-pencil-square-o"></i></a>
+                                        }
+                                        @*@if (User.IsInRole("group_delete"))
+                                            {
+                                                <a class="confirm-delete" id="delete" title="Hủy hồ sơ" data-title="@row["MaHoSo"]" data-id="@row["id"]"><i class="fa-lg btn-control far fa-trash-alt"></i></a>
+                                            }*@
+                                    </td>
+
+                                </tr>
+                            }
+
+                        }
+                        else
+                        {
+                            stt++;
+                            <tr>
+                                <td>
+                                    @stt
+                                </td>
+                                <td>
+                                    @row.name
+                                </td>
+                                <td>
+                                    @row.note
+                                </td>
+                                <td>
+                                    <a href="/Admin/Group/Member/@row.id">Quản lý thành viên</a>
+                                </td>
+                                <td>
+                                    <a href="/Admin/Group/Permission/@row.id">Quản lý quyền</a>
+                                </td>
+                                <td class="" style="text-align:right">
+                                    @if (User.IsInRole("group_update"))
+                                    {
+                                        <a class="confirm-edit" id="update" title="Cập nhật" href="/Admin/Group/EditGroup/@row.id"><i class="fa-lg btn-control fa fa-pencil-square-o"></i></a>
+                                    }
+                                    @*@if (User.IsInRole("group_delete"))
+                                        {
+                                            <a class="confirm-delete" id="delete" title="Hủy hồ sơ" data-title="@row["MaHoSo"]" data-id="@row["id"]"><i class="fa-lg btn-control far fa-trash-alt"></i></a>
+                                        }*@
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

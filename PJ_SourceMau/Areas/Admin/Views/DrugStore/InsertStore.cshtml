@@ -1,0 +1,132 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using PJ_SourceMau.Caption
+@model PJ_SourceMau.Models.DrugStore
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvaxMRMLvAnaIgVKXpturHxldsZ2gTeJE&libraries=places">
+</script>
+<script type="text/javascript">
+    google.maps.event.addDomListener(window, 'load', intilize);
+    function intilize() {
+        var autocomplete = new google.maps.places.Autocomplete(document.getElementById("txtautocomplete"));
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+            var location = "Address: " + place.formatted_address + "<br />";
+            var Latitude = place.geometry.location.lat();
+            var Longitude = place.geometry.location.lng();
+            $("#Latitude").attr("value", Latitude);
+            $("#Longitude").attr("value", Longitude);
+
+
+
+        });
+
+    };
+</script>
+
+<link href="~/css/clbcustom.css" rel="stylesheet" />
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb" style=" margin-right: 570px;">
+        <li>
+            <i class="fa fa-book"></i>&nbsp;<a href="#">@CaptionKey.AdminMenu</a>
+        </li>
+        <li class="active"><a href="/Admin/ListStore/">@CaptionKey.ListDrugStore</a></li>
+        <li> <a href="/Admin/ListStore/InsertStore/">@CaptionKey.AddDrugStore</a></li>
+
+
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="panel panel-blue">
+                <div class="panel-heading">@CaptionKey.AddDrugStore</div>
+                <div class="panel-body pan">
+                    <br />
+                    <form action="/Admin/ListStore/InsertStore" method="post" enctype="multipart/form-data">
+                        <div class="form-body pal">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label asp-for="name" class="control-label">Tên Nhà Thuốc</label>
+                                        <input asp-for="name" class="form-control" />
+                                        <span asp-validation-for="name" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="address" class="control-label">Địa Chỉ</label>
+                                        <input asp-for="address" class="form-control" id="txtautocomplete" />
+                                        <span asp-validation-for="address" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="district" class="control-label">Quận</label>
+                                        <select id="district" class="selectpicker form-control" data-style="btn-white"
+                                                asp-items="ViewBag.listdistrict" asp-for="district"></select>
+                                        <span asp-validation-for="district" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="phone" class="control-label">Số Điện Thoại</label>
+                                        <input asp-for="phone" class="form-control" type="tel" />
+                                        <span asp-validation-for="phone" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="imgSrc" class="control-label"></label>
+                                        <input asp-for="imgSrc" class="form-control" type="file" name="file" />
+                                        <span asp-validation-for="imgSrc" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="openTime" class="control-label">Giờ Mở Cửa</label>
+                                        @{
+                                            string opentime = null;
+                                            string originalTime = "10:00:00";
+                                            DateTime dt;
+                                            if (DateTime.TryParse(originalTime, out dt)) { opentime = dt.ToString("HH:mm"); }
+
+                                        }
+                                        <input asp-for="openTime" class="form-control" value="@opentime" type="time" />
+                                        <span asp-validation-for="openTime" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="closedTime" class="control-label">Giờ Đóng Cửa</label>
+                                        @{
+                                            string closedTime = null;
+                                            string originalTime1 = "10:00:00";
+                                            DateTime dt1;
+                                            if (DateTime.TryParse(originalTime1, out dt1)) { closedTime = dt1.ToString("HH:mm"); }
+
+                                        }
+                                        <input asp-for="closedTime" class="form-control" value="@closedTime" type="time" />
+                                        <span asp-validation-for="closedTime" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="categoryId" class="control-label">Loại Nhà Thuốc</label>
+                                        <select id="categoryId" class="selectpicker form-control" data-style="btn-white"
+                                                asp-items="ViewBag.listloai" asp-for="categoryId"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="description" class="control-label">Mô tả</label>
+                                        <textarea asp-for="description" class="form-control"></textarea>
+                                        <span asp-validation-for="description" class="text-danger"></span>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions text-right pal">
+
+                            <button type="submit" id="btnSave" class="btn btn-primary">Lưu</button>&nbsp;
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

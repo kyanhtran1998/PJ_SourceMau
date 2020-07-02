@@ -1,0 +1,149 @@
+﻿@using PJ_SourceMau.Areas.API.Models;
+@using PJ_SourceMau.Models;
+@using PJ_SourceMau.Caption
+@model List<Member>
+@{
+    ViewData["Title"] = CaptionKey.MemberofGroupForm;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        // $('.table').DataTable();
+        var table = $('#example').DataTable();
+    })
+    
+    //detele member
+    $(document).on("click", "#delete", function () {
+        //console.log($('#Row-' + $(this).data().email));
+        //$('#Row-' + $(this).data().email).remove();
+        var email = $(this).data("id");
+        $.ajax({
+            url: "/API/Group/DeleteMember",
+            type: "post",
+            dataType: 'json',
+            data: {
+                group_id: $("#group_id").val(),
+                email: email
+            },
+            success: function (result) {
+                window.location.reload();
+            }
+        });
+    });
+
+    //insert member
+    $(document).on("click", "#btnSave", function () {
+        var email = $('#selMember').val() + $("input[type=radio][name=ckemail]:checked").val();
+        //alert(email);
+        //return;
+
+        $.ajax({
+            url: "/API/Group/InsertMember",
+            type: "post",
+            data: {
+                group_id: $("#group_id").val(),
+                email: email
+            },
+            dataType: 'json',
+            success: function (result) {
+                if (result === 'Exists') {
+                    alert("Thành viên đã tồn tại");
+                    return;
+                }
+                window.location.reload();
+            }
+        });
+    });
+</script>
+<link href="~/css/clbcustom.css" rel="stylesheet" />
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <ol class="breadcrumb page-breadcrumb">
+        <li>
+            <i class="fa fa-book"></i>&nbsp;<a href="#">@CaptionKey.AdminMenu</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+        </li>
+        <li class="active"><a href="/admin/Group/">@CaptionKey.GroupMenu</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        @CaptionKey.MemberofGroupForm
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="panel panel-blue">
+                <div class="panel-heading">@CaptionKey.MemberofGroupForm</div>
+                <div class="panel-body pan">
+                    <div class="form-body pal">
+                        <br />
+                        <input class="hide" id="group_id" name="id" value='@ViewData["group_id"]' />
+                        <div id="pnl_member">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Loại email thành viên</label><br />
+                                        <div class="list-unstyled">
+                                            <input name="ckemail" id="2" tabindex="1" class="changeThu" checked
+                                                   type="radio" value="&#64;tdtu.edu.vn" />&nbsp;&nbsp;<label for="2">Giảng viên - viên chức</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input name="ckemail" id="3" tabindex="2" class="changeThu"
+                                                   type="radio" value="&#64;student.tdtu.edu.vn" />&nbsp;&nbsp;<label for="3">Học viên TDTU</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input name="ckemail" id="4" tabindex="3" class="changeThu"
+                                                   type="radio" value="" />&nbsp;&nbsp;<label for="4">Khác<small>(nhập đầy đủ email)</small></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input id="selMember" class="form-control" name="selMember" value='' />
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="btnSave" type="button" class="btn btn-primary">Thêm thành viên</button>
+                            <br />
+                            <br />
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-striped table-condensed table-hover" id="example">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Email</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="Member_Body">
+                                            @{ var stt = 0;}
+                                            @foreach (Member row in Model)
+                                            {
+                                                stt++;
+                                                <tr>
+                                                    <td>
+                                                        @stt
+                                                    </td>
+                                                    <td>
+                                                        @row.email
+                                                    </td>
+                                                    <td class="" style="text-align:right">
+                                                        @if (User.IsInRole("group_update"))
+                                                        {
+                                                            <a class="confirm-delete" id="delete" title="Xóa" data-id="@row.email"><i class="fa-lg btn-control fa fa-trash-o"></i></a>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+

@@ -1,0 +1,114 @@
+﻿
+@using PJ_SourceMau.Caption
+@{
+    var title = @ViewData["group_id"].ToString() == "0" ? CaptionKey.AddGroupForm : CaptionKey.EditGroupForm;
+    ViewData["Title"] = title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/clbcustom.css" rel="stylesheet" />
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <ol class="breadcrumb page-breadcrumb">
+        <li>
+            <i class="fa fa-book"></i>&nbsp;<a href="#">@CaptionKey.AdminMenu</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+        </li>
+        <li class="active"><a href="/admin/Group/">@CaptionKey.GroupMenu</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        @(ViewData["group_id"].ToString() == "0" ? CaptionKey.AddGroupForm : CaptionKey.EditGroupForm)
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="panel panel-blue">
+                <div class="panel-heading">@(ViewData["group_id"].ToString() == "0" ? CaptionKey.AddGroupForm : CaptionKey.EditGroupForm)</div>
+                <div class="panel-body pan">
+                    <br />
+                    <form id="frmEditGroup">
+                        <div class="form-body pal">
+                            <input class="hide" id="group_id" name="id" value="@ViewData["group_id"]" />
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="name">Tên nhóm</label>
+                                        <div class="controls">
+                                            <input id="name" name="name" class="form-control" type="text" value='' />
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="description">Ghi chú</label>
+                                        <div class="controls">
+                                            <textarea class="editor form-control" id="note" name="note" style="height: 200px"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions text-right pal">
+
+                            <button type="submit" id="btnSave" class="btn btn-primary">Lưu</button>&nbsp;
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    if ($('#group_id').val() !== 0) {
+        var group = GetGroupByID($('#group_id').val());
+        $('#name').val(group.name);
+        $('#note').val(group.note);
+    }
+    function GetGroupByID(id) {
+        var item;
+        $.ajax({
+            url: "/API/Group/GetGroup/",
+            data: {
+                id: id
+            },
+            async: false,
+            success: function (i, result) {
+                item = i;
+            }
+        });
+        return item;
+    }
+
+    $('#frmEditGroup').submit(function () {
+        event.preventDefault();
+        var form = $('#frmEditGroup').serialize();
+        var groupID = $('#group_id').val();
+        if (groupID !== "0") {
+            $.ajax({
+                url: "/API/Group/UpdateGroup/",
+                type: "post",
+                data: form,
+                dataType: 'json',
+                success: function (data) {
+                    window.location.href = "/Admin/Group";
+                }
+            });
+        }
+        else {
+            $.ajax({
+                url: "/API/Group/InsertGroup/",
+                type: "post",
+                data: form,
+                dataType: 'json',
+                success: function (data) {
+                    window.location.href = "/Admin/Group";
+                }
+            });
+        }
+    });
+</script>

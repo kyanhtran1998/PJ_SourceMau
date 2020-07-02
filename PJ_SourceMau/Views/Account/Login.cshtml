@@ -1,0 +1,43 @@
+﻿@model PJ_SourceMau.Models.UserLoginModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutStore.cshtml";
+}
+
+    <div class="row col-xl-6 col-lg-6 col-md-6" style="margin-top: 40px;margin-bottom: 100px">
+        <div class="form-horizontal">
+            <h3 style="text-align: center">Đăng nhập</h3>
+            <hr />
+            <div class="col-md-12" style="margin: 10px">
+                <form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]">
+                    <div class="form-group">
+                        <label asp-for="Username" class="control-label"></label>
+                        <input asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
+                        </label>
+                    </div>
+                    <div class="form-group" style="margin: 10px">
+                        <input type="submit" value="Đăng Nhập" class="btn btn-primary" style="margin-right: 10px" />
+                        <input type="submit" value="Google" class="btn btn-google-plus" style="margin-right: 10px" />
+                        @*<a class="" href="/Account/Login" style="margin-right: 10px">
+                            <i class="fa "></i>
+                            &nbsp;&nbsp;Google
+                        </a>*@
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @*@section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }*@
